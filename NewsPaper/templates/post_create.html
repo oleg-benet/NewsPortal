@@ -1,0 +1,20 @@
+{% extends 'flatpages/default.html' %}
+
+{% block content %}
+{% if path == "/articles/create" %}
+    <h2> Создать статью </h2>
+{% else %}
+    <h2> Создать новость </h2>
+{% endif %}
+
+<hr>
+<form action="" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Save" />
+</form>
+<br>
+<button> <a href="/sign/logout/">Выйти</a> </button>
+
+{% endblock content %}
+

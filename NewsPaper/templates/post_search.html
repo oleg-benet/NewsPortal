@@ -1,0 +1,38 @@
+{% extends 'flatpages/default.html' %}
+
+{% block content %}
+    <form action=""  method="get">
+    {{ filterset.form.as_p }}
+<!--     <input type="date" >-->
+        <input type="submit" value="Найти">
+
+
+    </form>
+
+    <h1>Всего новостей - {{posts|length}}</h1>
+    <hr>
+       {% if posts %}
+           <table>
+               <tr>
+                   <td>Заголовок</td>
+                   <td>&nbsp&nbsp&nbsp Дата публикации &nbsp&nbsp&nbsp </td>
+                   <td>Текст публикации</td>
+               </tr>
+
+               {% for post in posts %}
+               <tr>
+                   <td>{{ post.title }}</td>
+                   <td>&nbsp&nbsp&nbsp&nbsp{{ post.post_time|date:'d M Y' }}</td>
+                   <td>{{ post.text|truncatechars:50 }}</td>
+               </tr>
+               {% endfor %}
+
+           </table>
+       {% else %}
+           <h2>Новостей нет!</h2>
+       {% endif %}
+<br>
+<br>
+
+<button> <a href="/sign/logout/">Выйти</a> </button>
+{% endblock content %}
