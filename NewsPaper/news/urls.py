@@ -12,5 +12,6 @@ urlpatterns = [
     path('articles/<int:id>/delete', PostDelete.as_view(), name='articles_delete'),
     path('news/<int:id>/edit', PostEdit.as_view(), name='articles_edit'),
     path('news/category/<int:pk>', CategoryList.as_view(), name='category'),
-    path('news/category/<int:pk>/subscribe', subscribe, name='subscribe')
+    path('news/category/<int:pk>/subscribe', subscribe, name='subscribe'),
+    # path('', IndexView.as_view())
 ]

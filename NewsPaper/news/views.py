@@ -1,3 +1,5 @@
+from django.conf.global_settings import TIME_ZONE
+from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
@@ -6,6 +8,11 @@ from .filters import PostFilter
 from .forms import PostForm
 from .models import Post, Category
 from django.contrib.auth.decorators import login_required
+from .tasks import notification_about_news
+from django.views import View
+from datetime import datetime, timedelta
+import pytz
+
 
 
 class PostList(LoginRequiredMixin, ListView):
@@ -50,6 +57,8 @@ class PostCreate(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
         post = form.save(commit=False)
         if self.request.path == "/articles/create":
             post.post_kind = "ART"
+        post.save()
+        notification_about_news.delay(post.pk)
         return super().form_valid(form)
 
     def get_context_data(self, **kwargs):
@@ -97,3 +106,4 @@ def subscribe(request, pk):
 
     message = "Вы подписались на рассылку новостей категории"
     return render(request, 'subscribe.html', {'category': category, 'message': message})
+
